@@ -54,7 +54,7 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
     super.dispose();
   }
 
-  void _submitData() {
+  Future<void> _submitData() async {
     if (_formKey.currentState!.validate()) {
       try {
         final userUid = FirebaseAuth.instance.currentUser!.uid;
@@ -70,7 +70,7 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
 
         final achieved = isAchievedByHm(normalizedTotal, normalizedGoal);
         const repo = SleepRepository();
-        repo.update(userUid, widget.entry.id, {
+        await repo.update(userUid, widget.entry.id, {
           'total': normalizedTotal,
           'sleep': normalizedSleep,
           'core': normalizedCore,
@@ -79,8 +79,14 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
           'createdAt': Timestamp.fromDate(selectedDate),
         });
         // 一覧画面への遷移（新しい達成状態を返す）
+        if (!mounted) {
+          return;
+        }
         Navigator.of(context).pop(achieved);
       } catch (error) {
+        if (!mounted) {
+          return;
+        }
         context.showSnackBar(error.toString());
       }
     }
