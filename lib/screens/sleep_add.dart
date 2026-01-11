@@ -49,7 +49,7 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
     }
   }
 
-  void _submitData() {
+  Future<void> _submitData() async {
     if (_formKey.currentState!.validate()) {
       try {
         final userUid = FirebaseAuth.instance.currentUser!.uid;
@@ -75,7 +75,7 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
         isAchieved = isAchievedByHm(normalizedTotal, normalizedGoal);
         // FireStoreにデータを保存する
         const repo = SleepRepository();
-        repo.add(userUid, {
+        await repo.add(userUid, {
           'total': normalizedTotal,
           'sleep': normalizedSleep,
           'core': normalizedCore,
@@ -84,8 +84,14 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
           'createdAt': Timestamp.fromDate(selectedDate),
         });
         // 一覧画面への遷移
+        if (!mounted) {
+          return;
+        }
         Navigator.of(context).pop();
       } catch (error) {
+        if (!mounted) {
+          return;
+        }
         context.showSnackBar(error.toString());
       }
     }
