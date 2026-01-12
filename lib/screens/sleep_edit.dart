@@ -12,6 +12,32 @@ import 'package:sleep_tracker/services/sleep_repository.dart';
 import 'package:sleep_tracker/utils/context_extensions.dart';
 import 'package:sleep_tracker/utils/time_utils.dart';
 
+const _dateRangeYears = 5;
+const _pagePadding = EdgeInsets.symmetric(horizontal: 20, vertical: 24);
+const _headerSpacing = 8.0;
+const _sectionSpacing = 20.0;
+const _sectionSpacingLarge = 24.0;
+const _cardSpacing = 18.0;
+const _fieldSpacing = 18.0;
+const _buttonTopSpacing = 28.0;
+const _buttonSpacing = 12.0;
+const _primaryButtonPadding =
+    EdgeInsets.symmetric(horizontal: 26, vertical: 14);
+const _secondaryButtonPadding =
+    EdgeInsets.symmetric(horizontal: 24, vertical: 12);
+const _previewPadding = EdgeInsets.symmetric(horizontal: 20, vertical: 18);
+const _previewCornerRadius = 20.0;
+const _previewShadowOpacity = 0.06;
+const _previewShadowBlur = 14.0;
+const _previewShadowOffset = Offset(0, 8);
+const _previewStatusIconSize = 28.0;
+const _previewStatusSpacing = 12.0;
+const _previewMetricsSpacing = 18.0;
+const _metricSpacing = 6.0;
+const _metricLabelOpacity = 0.75;
+const _dateTileCornerRadius = 18.0;
+const _dateTilePadding = EdgeInsets.symmetric(horizontal: 16, vertical: 4);
+
 class SleepEditScreen extends StatefulWidget {
   const SleepEditScreen({
     super.key,
@@ -97,7 +123,7 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
     final picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(now.year - 5),
+      firstDate: DateTime(now.year - _dateRangeYears),
       lastDate: now,
       locale: const Locale('ja'),
     );
@@ -116,7 +142,7 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          padding: _pagePadding,
           child: Form(
             key: _formKey,
             child: Column(
@@ -128,58 +154,55 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
                         fontWeight: FontWeight.w800,
                       ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: _headerSpacing),
                 Text(
                   '記録内容を更新すると統計情報とグラフにも即時反映されます。',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: _sectionSpacing),
                 _EditPreviewCard(
                   total: totalController.text,
                   goal: goalController.text,
                   createdAt: selectedDate,
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: _cardSpacing),
                 _EditDatePickerTile(
                   selectedDate: selectedDate,
                   onTap: _pickDate,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: _sectionSpacingLarge),
                 TotalSleepFormTextField(
                   controller: totalController,
                   onChanged: (_) => setState(() {}),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: _fieldSpacing),
                 SleepHoursFormTextField(
                   controller: sleepController,
                   onChanged: (_) => setState(() {}),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: _fieldSpacing),
                 CoreSleepFormTextField(
                   controller: coreController,
                   onChanged: (_) => setState(() {}),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: _fieldSpacing),
                 GoalSleepFormTextField(
                   controller: goalController,
                   onChanged: (_) => setState(() {}),
                 ),
-                const SizedBox(height: 28),
+                const SizedBox(height: _buttonTopSpacing),
                 FilledButton.icon(
                   onPressed: _submitData,
                   icon: const Icon(Icons.save_alt_rounded),
                   label: const Text('更新する'),
                   style: FilledButton.styleFrom(
                     shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 26,
-                      vertical: 14,
-                    ),
+                    padding: _primaryButtonPadding,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: _buttonSpacing),
                 OutlinedButton.icon(
                   onPressed: () {
                     Navigator.of(context).maybePop();
@@ -188,10 +211,7 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
                   label: const Text('戻る'),
                   style: OutlinedButton.styleFrom(
                     shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ),
+                    padding: _secondaryButtonPadding,
                   ),
                 ),
               ],
@@ -234,16 +254,16 @@ class _EditPreviewCard extends StatelessWidget {
     final createdLabel = DateFormat('yyyy年M月d日(E)', 'ja_JP').format(createdAt);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: _previewPadding,
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(_previewCornerRadius),
         border: Border.all(color: colorScheme.outlineVariant),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.shadow.withOpacity(0.06),
-            blurRadius: 14,
-            offset: const Offset(0, 8),
+            color: colorScheme.shadow.withOpacity(_previewShadowOpacity),
+            blurRadius: _previewShadowBlur,
+            offset: _previewShadowOffset,
           ),
         ],
       ),
@@ -255,9 +275,9 @@ class _EditPreviewCard extends StatelessWidget {
               Icon(
                 achieved ? Icons.flag_rounded : Icons.alarm_rounded,
                 color: statusColor,
-                size: 28,
+                size: _previewStatusIconSize,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: _previewStatusSpacing),
               Expanded(
                 child: Text(
                   statusText,
@@ -269,7 +289,7 @@ class _EditPreviewCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: _previewMetricsSpacing),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -290,7 +310,7 @@ class _EditPreviewCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: _previewMetricsSpacing),
           Text(
             '記録日時: $createdLabel',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -320,12 +340,12 @@ class _EditDatePickerTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(_dateTileCornerRadius),
         border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: ListTile(
         onTap: onTap,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        contentPadding: _dateTilePadding,
         leading: Icon(Icons.calendar_month, color: colorScheme.primary),
         title: const Text('記録日'),
         subtitle: Text(formatted),
@@ -354,11 +374,11 @@ class _PreviewMetric extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: color.withOpacity(0.75),
+                color: color.withOpacity(_metricLabelOpacity),
                 fontWeight: FontWeight.w600,
               ),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: _metricSpacing),
         Text(
           value,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(

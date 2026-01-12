@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
 
+const _cardPadding = EdgeInsets.symmetric(horizontal: 28, vertical: 24);
+const _cardCornerRadius = 22.0;
+const _cardShadowOpacity = 0.08;
+const _cardShadowBlur = 18.0;
+const _cardShadowOffset = Offset(0, 10);
+const _logoSize = 64.0;
+const _logoCornerRadius = 20.0;
+const _logoIconSize = 34.0;
+const _titleSpacing = 14.0;
+const _subtitleSpacing = 6.0;
+
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
@@ -9,16 +20,16 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+          padding: _cardPadding,
           decoration: BoxDecoration(
             color: colorScheme.surface,
-            borderRadius: BorderRadius.circular(22),
+            borderRadius: BorderRadius.circular(_cardCornerRadius),
             border: Border.all(color: colorScheme.outlineVariant),
             boxShadow: [
               BoxShadow(
-                color: colorScheme.shadow.withOpacity(0.08),
-                blurRadius: 18,
-                offset: const Offset(0, 10),
+                color: colorScheme.shadow.withOpacity(_cardShadowOpacity),
+                blurRadius: _cardShadowBlur,
+                offset: _cardShadowOffset,
               ),
             ],
           ),
@@ -26,26 +37,26 @@ class SplashScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 64,
-                height: 64,
+                width: _logoSize,
+                height: _logoSize,
                 decoration: BoxDecoration(
                   color: colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(_logoCornerRadius),
                 ),
                 child: Icon(
                   Icons.bedtime_rounded,
                   color: colorScheme.onPrimaryContainer,
-                  size: 34,
+                  size: _logoIconSize,
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: _titleSpacing),
               Text(
                 'Sleep Tracker',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: _subtitleSpacing),
               Text(
                 'Loading your sleep insights...',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(

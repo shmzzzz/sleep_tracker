@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:sleep_tracker/widgets/logout_button.dart';
 
+const _appBarHeight = 72.0;
+const _titleSpacing = 20.0;
+const _logoSize = 34.0;
+const _logoCornerRadius = 12.0;
+const _logoIconSize = 18.0;
+const _logoTitleSpacing = 12.0;
+const _titleLetterSpacing = 0.4;
+
 class AppBarComponentWidget extends StatelessWidget
     implements PreferredSizeWidget {
   const AppBarComponentWidget({
@@ -15,24 +23,24 @@ class AppBarComponentWidget extends StatelessWidget
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return AppBar(
-      toolbarHeight: 72,
-      titleSpacing: 20,
+      toolbarHeight: _appBarHeight,
+      titleSpacing: _titleSpacing,
       title: Row(
         children: [
           Container(
-            width: 34,
-            height: 34,
+            width: _logoSize,
+            height: _logoSize,
             decoration: BoxDecoration(
               color: colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(_logoCornerRadius),
             ),
             child: Icon(
               Icons.bedtime_rounded,
-              size: 18,
+              size: _logoIconSize,
               color: colorScheme.onPrimaryContainer,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: _logoTitleSpacing),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,7 +49,7 @@ class AppBarComponentWidget extends StatelessWidget
                 style: textTheme.labelSmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w600,
-                  letterSpacing: 0.4,
+                  letterSpacing: _titleLetterSpacing,
                 ),
               ),
               Text(
@@ -62,6 +70,6 @@ class AppBarComponentWidget extends StatelessWidget
 
   @override
   Size get preferredSize {
-    return const Size.fromHeight(72);
+    return const Size.fromHeight(_appBarHeight);
   }
 }

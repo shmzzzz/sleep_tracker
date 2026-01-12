@@ -3,6 +3,9 @@ import 'package:sleep_tracker/utils/time_utils.dart';
 
 enum TimeFieldKind { hm, hmRange }
 
+const _fieldContentPadding =
+    EdgeInsets.symmetric(horizontal: 16, vertical: 16);
+
 class LabeledTimeFormField extends StatelessWidget {
   const LabeledTimeFormField({
     super.key,
@@ -34,8 +37,7 @@ class LabeledTimeFormField extends StatelessWidget {
         hintText: hintText ?? formatHint,
         helperText: helperText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: _fieldContentPadding,
       ),
       keyboardType: TextInputType.datetime,
       textInputAction: TextInputAction.next,

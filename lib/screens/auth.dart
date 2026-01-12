@@ -6,6 +6,24 @@ import 'package:sleep_tracker/utils/context_extensions.dart';
 
 final _firebase = FirebaseAuth.instance;
 
+const _pagePadding = EdgeInsets.symmetric(horizontal: 24, vertical: 24);
+const _logoSize = 68.0;
+const _logoCornerRadius = 22.0;
+const _logoIconSize = 36.0;
+const _titleSpacing = 16.0;
+const _subtitleSpacing = 8.0;
+const _sectionSpacing = 24.0;
+const _cardPadding = EdgeInsets.symmetric(horizontal: 24, vertical: 28);
+const _cardCornerRadius = 22.0;
+const _cardShadowOpacity = 0.08;
+const _cardShadowBlur = 16.0;
+const _cardShadowOffset = Offset(0, 8);
+const _progressFadeDuration = Duration(milliseconds: 250);
+const _fieldSpacing = 16.0;
+const _buttonSpacing = 24.0;
+const _toggleSpacing = 12.0;
+const _minPasswordLength = 6;
+
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -164,25 +182,25 @@ class _AuthScreenState extends State<AuthScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            padding: _pagePadding,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  width: 68,
-                  height: 68,
+                  width: _logoSize,
+                  height: _logoSize,
                   decoration: BoxDecoration(
                     color: colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(22),
+                    borderRadius: BorderRadius.circular(_logoCornerRadius),
                   ),
                   child: Icon(
                     Icons.bedtime_rounded,
-                    size: 36,
+                    size: _logoIconSize,
                     color: colorScheme.onPrimaryContainer,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: _titleSpacing),
                 Text(
                   'Sleep Tracker',
                   textAlign: TextAlign.center,
@@ -190,7 +208,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         fontWeight: FontWeight.w800,
                       ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: _subtitleSpacing),
                 Text(
                   'ヘルスケアに特化した睡眠トラッカーで、日々のリズムを整えましょう。',
                   textAlign: TextAlign.center,
@@ -198,21 +216,19 @@ class _AuthScreenState extends State<AuthScreen> {
                         color: colorScheme.onSurfaceVariant,
                       ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: _sectionSpacing),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 28,
-                  ),
+                  padding: _cardPadding,
                   decoration: BoxDecoration(
                     color: colorScheme.surface,
-                    borderRadius: BorderRadius.circular(22),
+                    borderRadius: BorderRadius.circular(_cardCornerRadius),
                     border: Border.all(color: colorScheme.outlineVariant),
                     boxShadow: [
                       BoxShadow(
-                        color: colorScheme.shadow.withOpacity(0.08),
-                        blurRadius: 16,
-                        offset: const Offset(0, 8),
+                        color:
+                            colorScheme.shadow.withOpacity(_cardShadowOpacity),
+                        blurRadius: _cardShadowBlur,
+                        offset: _cardShadowOffset,
                       ),
                     ],
                   ),
@@ -223,12 +239,13 @@ class _AuthScreenState extends State<AuthScreen> {
                       children: [
                         AnimatedOpacity(
                           opacity: _isAuthenticating ? 1 : 0,
-                          duration: const Duration(milliseconds: 250),
+                          duration: _progressFadeDuration,
                           child: _isAuthenticating
                               ? const LinearProgressIndicator()
                               : const SizedBox.shrink(),
                         ),
-                        if (_isAuthenticating) const SizedBox(height: 16),
+                        if (_isAuthenticating)
+                          const SizedBox(height: _fieldSpacing),
                         TextFormField(
                           decoration: const InputDecoration(
                             label: Text('メールアドレス'),
@@ -249,7 +266,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             _enteredEmail = newValue!;
                           },
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: _fieldSpacing),
                         TextFormField(
                           decoration: InputDecoration(
                             label: const Text('パスワード'),
@@ -267,8 +284,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                           obscureText: _obscurePassword,
                           validator: (value) {
-                            if (value == null || value.length < 6) {
-                              return 'パスワードを6文字以上で入力してください。';
+                            if (value == null ||
+                                value.length < _minPasswordLength) {
+                              return 'パスワードを$_minPasswordLength文字以上で入力してください。';
                             }
                             return null;
                           },
@@ -281,7 +299,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             }
                           },
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: _buttonSpacing),
                         FilledButton.icon(
                           onPressed: _isAuthenticating ? null : _submit,
                           icon: Icon(
@@ -289,7 +307,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                           label: Text(_isLogin ? 'ログイン' : 'アカウント作成'),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: _toggleSpacing),
                         TextButton(
                           onPressed: _isAuthenticating
                               ? null
