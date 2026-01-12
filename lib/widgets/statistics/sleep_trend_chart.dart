@@ -44,6 +44,8 @@ class SleepTrendChart extends StatelessWidget {
         .toDouble();
 
     final colorScheme = Theme.of(context).colorScheme;
+    final gridLineColor = colorScheme.outlineVariant.withOpacity(0.6);
+    final axisLineColor = colorScheme.outlineVariant;
 
     return AspectRatio(
       aspectRatio: 1.5,
@@ -91,19 +93,20 @@ class SleepTrendChart extends StatelessWidget {
               drawVerticalLine: false,
               horizontalInterval: 1,
               getDrawingHorizontalLine: (value) => FlLine(
-                strokeWidth: 0.4,
-                color: colorScheme.outlineVariant.withOpacity(0.4),
+                strokeWidth: 0.7,
+                dashArray: [4, 4],
+                color: gridLineColor,
               ),
             ),
             borderData: FlBorderData(
               show: true,
               border: Border(
-                left: BorderSide(color: colorScheme.outlineVariant),
-                bottom: BorderSide(color: colorScheme.outlineVariant),
+                left: BorderSide(color: axisLineColor),
+                bottom: BorderSide(color: axisLineColor),
                 top: BorderSide(
-                    color: colorScheme.outlineVariant.withOpacity(0.4)),
+                    color: axisLineColor.withOpacity(0.4)),
                 right: BorderSide(
-                    color: colorScheme.outlineVariant.withOpacity(0.4)),
+                    color: axisLineColor.withOpacity(0.4)),
               ),
             ),
             lineBarsData: [
@@ -112,10 +115,27 @@ class SleepTrendChart extends StatelessWidget {
                 isCurved: true,
                 barWidth: 3,
                 color: colorScheme.primary,
-                dotData: const FlDotData(show: true),
+                dotData: FlDotData(
+                  show: true,
+                  getDotPainter: (spot, percent, barData, index) {
+                    return FlDotCirclePainter(
+                      radius: 3.2,
+                      color: colorScheme.primary,
+                      strokeWidth: 1.6,
+                      strokeColor: colorScheme.surface,
+                    );
+                  },
+                ),
                 belowBarData: BarAreaData(
                   show: true,
-                  color: colorScheme.primaryContainer.withOpacity(0.35),
+                  gradient: LinearGradient(
+                    colors: [
+                      colorScheme.primary.withOpacity(0.2),
+                      colorScheme.primary.withOpacity(0.02),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
               ),
             ],

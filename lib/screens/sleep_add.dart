@@ -197,12 +197,26 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
                   onPressed: _submitData,
                   icon: const Icon(Icons.cloud_upload_rounded),
                   label: const Text('保存する'),
+                  style: FilledButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 26,
+                      vertical: 14,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
                   onPressed: _clearText,
                   icon: const Icon(Icons.clear_all),
                   label: const Text('リセット'),
+                  style: OutlinedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -242,55 +256,65 @@ class _PreviewCard extends StatelessWidget {
 
     final statusColor = achieved ? colorScheme.primary : colorScheme.secondary;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  achieved ? Icons.emoji_events : Icons.self_improvement,
-                  color: statusColor,
-                  size: 28,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colorScheme.outlineVariant),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withOpacity(0.06),
+            blurRadius: 14,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                achieved ? Icons.emoji_events : Icons.self_improvement,
+                color: statusColor,
+                size: 28,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  statusText,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    statusText,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onSurface,
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 18),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _PreviewMetric(
-                  label: '合計睡眠',
-                  value: total.isEmpty ? '--:--' : total,
-                  color: colorScheme.primary,
-                ),
-                _PreviewMetric(
-                  label: '目標',
-                  value: goal.isEmpty ? '--:--' : goal,
-                  color: colorScheme.secondary,
-                ),
-                _PreviewMetric(
-                  label: '差分',
-                  value: difference,
-                  color: statusColor,
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _PreviewMetric(
+                label: '合計睡眠',
+                value: total.isEmpty ? '--:--' : total,
+                color: colorScheme.primary,
+              ),
+              _PreviewMetric(
+                label: '目標',
+                value: goal.isEmpty ? '--:--' : goal,
+                color: colorScheme.secondary,
+              ),
+              _PreviewMetric(
+                label: '差分',
+                value: difference,
+                color: statusColor,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -345,16 +369,20 @@ class _DatePickerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final formatted = DateFormat('yyyy年M月d日(E)', 'ja_JP').format(selectedDate);
-    return ListTile(
-      onTap: onTap,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: colorScheme.outline.withOpacity(0.2)),
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
-      leading: Icon(Icons.calendar_today, color: colorScheme.primary),
-      title: const Text('記録日'),
-      subtitle: Text(formatted),
-      trailing: const Icon(Icons.edit_calendar_outlined),
+      child: ListTile(
+        onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        leading: Icon(Icons.calendar_today, color: colorScheme.primary),
+        title: const Text('記録日'),
+        subtitle: Text(formatted),
+        trailing: const Icon(Icons.edit_calendar_outlined),
+      ),
     );
   }
 }
