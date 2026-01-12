@@ -169,10 +169,18 @@ class _AuthScreenState extends State<AuthScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(
-                  Icons.bedtime_rounded,
-                  size: 64,
-                  color: colorScheme.primary,
+                Container(
+                  width: 68,
+                  height: 68,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: Icon(
+                    Icons.bedtime_rounded,
+                    size: 36,
+                    color: colorScheme.onPrimaryContainer,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -191,100 +199,110 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                 ),
                 const SizedBox(height: 24),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 28,
-                    ),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          AnimatedOpacity(
-                            opacity: _isAuthenticating ? 1 : 0,
-                            duration: const Duration(milliseconds: 250),
-                            child: _isAuthenticating
-                                ? const LinearProgressIndicator()
-                                : const SizedBox.shrink(),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 28,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    borderRadius: BorderRadius.circular(22),
+                    border: Border.all(color: colorScheme.outlineVariant),
+                    boxShadow: [
+                      BoxShadow(
+                        color: colorScheme.shadow.withOpacity(0.08),
+                        blurRadius: 16,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        AnimatedOpacity(
+                          opacity: _isAuthenticating ? 1 : 0,
+                          duration: const Duration(milliseconds: 250),
+                          child: _isAuthenticating
+                              ? const LinearProgressIndicator()
+                              : const SizedBox.shrink(),
+                        ),
+                        if (_isAuthenticating) const SizedBox(height: 16),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            label: Text('メールアドレス'),
+                            prefixIcon: Icon(Icons.mail_outline),
                           ),
-                          if (_isAuthenticating) const SizedBox(height: 16),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              label: Text('メールアドレス'),
-                              prefixIcon: Icon(Icons.mail_outline),
+                          keyboardType: TextInputType.emailAddress,
+                          autocorrect: false,
+                          textCapitalization: TextCapitalization.none,
+                          validator: (value) {
+                            if (value == null ||
+                                value.trim().isEmpty ||
+                                !value.contains('@')) {
+                              return 'メールアドレスを入力してください。';
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            _enteredEmail = newValue!;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            label: const Text('パスワード'),
+                            prefixIcon: const Icon(Icons.key),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              },
+                              icon: Icon(_obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility),
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            autocorrect: false,
-                            textCapitalization: TextCapitalization.none,
-                            validator: (value) {
-                              if (value == null ||
-                                  value.trim().isEmpty ||
-                                  !value.contains('@')) {
-                                return 'メールアドレスを入力してください。';
-                              }
-                              return null;
-                            },
-                            onSaved: (newValue) {
-                              _enteredEmail = newValue!;
-                            },
                           ),
-                          const SizedBox(height: 16),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              label: const Text('パスワード'),
-                              prefixIcon: const Icon(Icons.key),
-                              suffixIcon: IconButton(
-                                onPressed: () {
+                          obscureText: _obscurePassword,
+                          validator: (value) {
+                            if (value == null || value.length < 6) {
+                              return 'パスワードを6文字以上で入力してください。';
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) {
+                            _enteredPassword = newValue!;
+                          },
+                          onFieldSubmitted: (_) {
+                            if (!_isAuthenticating) {
+                              _submit();
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 24),
+                        FilledButton.icon(
+                          onPressed: _isAuthenticating ? null : _submit,
+                          icon: Icon(
+                            _isLogin ? Icons.login : Icons.person_add_alt_1,
+                          ),
+                          label: Text(_isLogin ? 'ログイン' : 'アカウント作成'),
+                        ),
+                        const SizedBox(height: 12),
+                        TextButton(
+                          onPressed: _isAuthenticating
+                              ? null
+                              : () {
                                   setState(() {
-                                    _obscurePassword = !_obscurePassword;
+                                    _isLogin = !_isLogin;
                                   });
                                 },
-                                icon: Icon(_obscurePassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                              ),
-                            ),
-                            obscureText: _obscurePassword,
-                            validator: (value) {
-                              if (value == null || value.length < 6) {
-                                return 'パスワードを6文字以上で入力してください。';
-                              }
-                              return null;
-                            },
-                            onSaved: (newValue) {
-                              _enteredPassword = newValue!;
-                            },
-                            onFieldSubmitted: (_) {
-                              if (!_isAuthenticating) {
-                                _submit();
-                              }
-                            },
+                          child: Text(
+                            _isLogin ? 'アカウント新規作成はこちら' : 'ログインへ戻る',
                           ),
-                          const SizedBox(height: 24),
-                          FilledButton.icon(
-                            onPressed: _isAuthenticating ? null : _submit,
-                            icon: Icon(
-                              _isLogin ? Icons.login : Icons.person_add_alt_1,
-                            ),
-                            label: Text(_isLogin ? 'ログイン' : 'アカウント作成'),
-                          ),
-                          const SizedBox(height: 12),
-                          TextButton(
-                            onPressed: _isAuthenticating
-                                ? null
-                                : () {
-                                    setState(() {
-                                      _isLogin = !_isLogin;
-                                    });
-                                  },
-                            child: Text(
-                              _isLogin ? 'アカウント新規作成はこちら' : 'ログインへ戻る',
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

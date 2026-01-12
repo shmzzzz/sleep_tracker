@@ -16,9 +16,10 @@ class DrawerList extends StatelessWidget {
     return Drawer(
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
         children: [
-          DrawerHeader(
+          Container(
+            padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -28,17 +29,20 @@ class DrawerList extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                CircleAvatar(
-                  radius: 28,
-                  backgroundColor: colorScheme.onPrimary.withOpacity(0.2),
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: colorScheme.onPrimary.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                   child: Icon(
                     Icons.nightlight_round,
-                    size: 32,
                     color: colorScheme.onPrimary,
                   ),
                 ),
@@ -47,7 +51,7 @@ class DrawerList extends StatelessWidget {
                   'Sleep Tracker',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                       ),
                 ),
                 const SizedBox(height: 4),
@@ -60,57 +64,65 @@ class DrawerList extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 4,
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: colorScheme.outlineVariant),
             ),
-            child: ListTile(
-              leading: const Icon(Icons.analytics_outlined),
-              title: const Text('睡眠データ一覧'),
-              subtitle: const Text('トレンドと達成状況を確認'),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacement(
-                  CupertinoPageRoute(
-                    builder: (context) {
-                      return const SleepListScreen();
-                    },
-                  ),
-                );
-              },
-              trailing: const Icon(Icons.arrow_circle_right_outlined),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.analytics_outlined),
+                  title: const Text('睡眠データ一覧'),
+                  subtitle: const Text('トレンドと達成状況を確認'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(
+                      CupertinoPageRoute(
+                        builder: (context) {
+                          return const SleepListScreen();
+                        },
+                      ),
+                    );
+                  },
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                ),
+                Divider(color: colorScheme.outlineVariant),
+                ListTile(
+                  leading: const Icon(Icons.add_alarm_outlined),
+                  title: const Text('睡眠データ追加'),
+                  subtitle: const Text('新しい記録を登録'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      CupertinoPageRoute(
+                        builder: (context) {
+                          return const SleepAddScreen();
+                        },
+                      ),
+                    );
+                  },
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                ),
+              ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 4,
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: colorScheme.outlineVariant),
             ),
-            child: ListTile(
-              leading: const Icon(Icons.add_alarm_outlined),
-              title: const Text('睡眠データ追加'),
-              subtitle: const Text('新しい記録を登録'),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(
-                  CupertinoPageRoute(
-                    builder: (context) {
-                      return const SleepAddScreen();
-                    },
-                  ),
-                );
-              },
-              trailing: const Icon(Icons.arrow_circle_right_outlined),
-            ),
-          ),
-          const Divider(),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('ログアウト'),
-              trailing: LogoutButton(),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: LogoutButton(
+                compact: false,
+              ),
             ),
           ),
         ],

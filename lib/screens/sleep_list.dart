@@ -100,10 +100,15 @@ class _SleepListScreenState extends State<SleepListScreen> {
       appBar: AppBarComponentWidget(title: title),
       drawer: const DrawerList(),
       body: SafeArea(child: body),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FilledButton.icon(
         onPressed: _goToAdd,
         icon: const Icon(Icons.add),
         label: const Text('記録する'),
+        style: FilledButton.styleFrom(
+          shape: const StadiumBorder(),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        ),
       ),
     );
   }

@@ -66,135 +66,154 @@ class _SleepListItemState extends State<SleepListItem> {
     final goalDifferenceText = _goalDifferenceText();
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Card(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: () async {
-          final result = await Navigator.of(context).push(
-            CupertinoPageRoute(
-              builder: (context) {
-                return SleepEditScreen(entry: entry);
-              },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: () async {
+            final result = await Navigator.of(context).push(
+              CupertinoPageRoute(
+                builder: (context) {
+                  return SleepEditScreen(entry: entry);
+                },
+              ),
+            );
+            if (result is bool) updateAchievement(result);
+          },
+          child: Ink(
+            decoration: BoxDecoration(
+              color: colorScheme.surface,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: colorScheme.outlineVariant),
+              boxShadow: [
+                BoxShadow(
+                  color: colorScheme.shadow.withOpacity(0.08),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
             ),
-          );
-          if (result is bool) updateAchievement(result);
-        },
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: 22,
-                    backgroundColor: isAchieved
-                        ? colorScheme.primaryContainer
-                        : colorScheme.secondaryContainer,
-                    child: Icon(
-                      isAchieved ? Icons.check_rounded : Icons.bed_rounded,
-                      color: isAchieved
-                          ? colorScheme.onPrimaryContainer
-                          : colorScheme.onSecondaryContainer,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          entry.total,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(
-                                fontWeight: FontWeight.w800,
-                              ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        radius: 22,
+                        backgroundColor: isAchieved
+                            ? colorScheme.primaryContainer
+                            : colorScheme.secondaryContainer,
+                        child: Icon(
+                          isAchieved ? Icons.check_rounded : Icons.bed_rounded,
+                          color: isAchieved
+                              ? colorScheme.onPrimaryContainer
+                              : colorScheme.onSecondaryContainer,
                         ),
-                        const SizedBox(height: 4),
-                        Row(
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.flag_rounded,
-                              size: 18,
-                              color: colorScheme.primary,
-                            ),
-                            const SizedBox(width: 6),
                             Text(
-                              '目標差: $goalDifferenceText',
+                              entry.total,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyMedium
+                                  .headlineSmall
                                   ?.copyWith(
-                                    color: colorScheme.onSurfaceVariant,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w800,
                                   ),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.flag_rounded,
+                                  size: 18,
+                                  color: colorScheme.primary,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  '目標差: $goalDifferenceText',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: colorScheme.onSurfaceVariant,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                      IconButton(
+                        onPressed: () => _confirmDelete(context),
+                        icon: const Icon(Icons.delete_outline),
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    onPressed: () => _confirmDelete(context),
-                    icon: const Icon(Icons.delete_outline),
+                  const SizedBox(height: 16),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    children: [
+                      _InfoChip(
+                        icon: Icons.single_bed_rounded,
+                        label: '睡眠',
+                        value: entry.sleep,
+                        color: colorScheme.secondary,
+                        textColor: colorScheme.onSurface,
+                      ),
+                      _InfoChip(
+                        icon: Icons.bedtime,
+                        label: 'コア',
+                        value: entry.core,
+                        color: colorScheme.tertiary,
+                        textColor: colorScheme.onSurface,
+                      ),
+                      _InfoChip(
+                        icon: Icons.flag_circle,
+                        label: '目標',
+                        value: entry.goal,
+                        color: colorScheme.primary,
+                        textColor: colorScheme.onSurface,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        createdLabel,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          final result = await Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) =>
+                                  SleepEditScreen(entry: entry),
+                            ),
+                          );
+                          if (result is bool) updateAchievement(result);
+                        },
+                        child: const Text('編集'),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                children: [
-                  _InfoChip(
-                    icon: Icons.single_bed_rounded,
-                    label: '睡眠',
-                    value: entry.sleep,
-                    color: colorScheme.secondaryContainer,
-                    textColor: colorScheme.onSecondaryContainer,
-                  ),
-                  _InfoChip(
-                    icon: Icons.bedtime,
-                    label: 'コア',
-                    value: entry.core,
-                    color: colorScheme.tertiaryContainer,
-                    textColor: colorScheme.onTertiaryContainer,
-                  ),
-                  _InfoChip(
-                    icon: Icons.flag_circle,
-                    label: '目標',
-                    value: entry.goal,
-                    color: colorScheme.surfaceVariant,
-                    textColor: colorScheme.onSurfaceVariant,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    createdLabel,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                        ),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      final result = await Navigator.of(context).push(
-                        CupertinoPageRoute(
-                          builder: (context) => SleepEditScreen(entry: entry),
-                        ),
-                      );
-                      if (result is bool) updateAchievement(result);
-                    },
-                    child: const Text('編集'),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -255,13 +274,14 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: color,
+        color: color.withOpacity(0.14),
         borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: color.withOpacity(0.35)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: textColor),
+          Icon(icon, size: 18, color: color),
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,7 +289,7 @@ class _InfoChip extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: textColor.withOpacity(0.8),
+                      color: textColor.withOpacity(0.75),
                       fontWeight: FontWeight.w600,
                     ),
               ),

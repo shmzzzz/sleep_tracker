@@ -29,11 +29,13 @@ class LabeledTimeFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
         label: Text(label),
         prefixIcon: Icon(icon),
         hintText: hintText ?? formatHint,
         helperText: helperText,
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       keyboardType: TextInputType.datetime,
       textInputAction: TextInputAction.next,
