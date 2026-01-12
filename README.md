@@ -1,16 +1,24 @@
 # sleep_tracker
 
-A new Flutter project.
+睡眠の記録・目標管理・可視化を行うFlutterアプリです。
 
-## Getting Started
+## 主な機能
 
-This project is a starting point for a Flutter application.
+- 睡眠データの追加: 就寝・起床・コア睡眠・目標時間を入力して記録
+- 睡眠データの編集: 既存の記録を更新、必要に応じて削除
+- 一覧表示: 日別の睡眠記録をカードで確認
+- 目標との差分表示: 目標時間との差分を自動計算して表示
+- 達成状況の可視化: 目標達成の有無をラベルや色で表現
+- 統計/トレンド表示: 平均・最高などの統計と直近の推移をグラフ化
 
-A few resources to get you started if this is your first Flutter project:
+## セットアップ
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+flutter pub get
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 開発メモ
+
+- UIは `lib/screens/` と `lib/widgets/` を中心に構成しています
+- テーマ定義は `lib/utils/app_theme.dart` にあります
