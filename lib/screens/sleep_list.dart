@@ -9,17 +9,7 @@ import 'package:sleep_tracker/widgets/sleep_list_item.dart';
 import 'package:sleep_tracker/services/sleep_repository.dart';
 import 'package:sleep_tracker/utils/sleep_statistics.dart';
 import 'package:sleep_tracker/widgets/statistics/sleep_statistics_overview.dart';
-
-const _listBottomPadding = EdgeInsets.only(bottom: 96);
-const _fabPadding = EdgeInsets.symmetric(horizontal: 24, vertical: 14);
-const _emptyStatePadding = EdgeInsets.symmetric(horizontal: 32, vertical: 40);
-const _emptyStateIconSize = 64.0;
-const _emptyStateTitleSpacing = 16.0;
-const _emptyStateBodySpacing = 8.0;
-const _emptyStateButtonSpacing = 24.0;
-const _errorIconSize = 48.0;
-const _errorTitleSpacing = 12.0;
-const _errorBodySpacing = 8.0;
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class SleepListScreen extends StatefulWidget {
   const SleepListScreen({super.key});
@@ -82,7 +72,7 @@ class _SleepListScreenState extends State<SleepListScreen> {
                 ),
               ),
               SliverPadding(
-                padding: _listBottomPadding,
+                padding: UiConstants.sleepListBottomPadding,
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -118,7 +108,7 @@ class _SleepListScreenState extends State<SleepListScreen> {
         label: const Text('記録する'),
         style: FilledButton.styleFrom(
           shape: const StadiumBorder(),
-          padding: _fabPadding,
+          padding: UiConstants.sleepListFabPadding,
         ),
       ),
     );
@@ -135,17 +125,17 @@ class _EmptyState extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Center(
       child: Padding(
-        padding: _emptyStatePadding,
+        padding: UiConstants.sleepListEmptyStatePadding,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               Icons.nightlight_round,
-              size: _emptyStateIconSize,
+              size: UiConstants.sleepListEmptyStateIconSize,
               color: colorScheme.primary,
             ),
-            const SizedBox(height: _emptyStateTitleSpacing),
+            const SizedBox(height: UiConstants.sleepListEmptyStateTitleSpacing),
             Text(
               '最初の睡眠記録を追加しましょう',
               textAlign: TextAlign.center,
@@ -153,7 +143,7 @@ class _EmptyState extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            const SizedBox(height: _emptyStateBodySpacing),
+            const SizedBox(height: UiConstants.sleepListEmptyStateBodySpacing),
             Text(
               '目標に対する達成状況や睡眠トレンドを記録していくと、生活リズムの改善に役立ちます。',
               textAlign: TextAlign.center,
@@ -161,7 +151,7 @@ class _EmptyState extends StatelessWidget {
                     color: colorScheme.onSurfaceVariant,
                   ),
             ),
-            const SizedBox(height: _emptyStateButtonSpacing),
+            const SizedBox(height: UiConstants.sleepListEmptyStateButtonSpacing),
             FilledButton.icon(
               onPressed: onAdd,
               icon: const Icon(Icons.add),
@@ -183,13 +173,14 @@ class _ErrorState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.error_outline, size: _errorIconSize),
-          const SizedBox(height: _errorTitleSpacing),
+          const Icon(Icons.error_outline,
+              size: UiConstants.sleepListErrorIconSize),
+          const SizedBox(height: UiConstants.sleepListErrorTitleSpacing),
           Text(
             'データの読み込みに失敗しました。',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: _errorBodySpacing),
+          const SizedBox(height: UiConstants.sleepListErrorBodySpacing),
           Text(
             '通信環境を確認してからもう一度お試しください。',
             style: Theme.of(context).textTheme.bodyMedium,

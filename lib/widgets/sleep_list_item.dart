@@ -7,27 +7,7 @@ import 'package:sleep_tracker/screens/sleep_edit.dart';
 import 'package:sleep_tracker/services/sleep_repository.dart';
 import 'package:sleep_tracker/utils/context_extensions.dart';
 import 'package:sleep_tracker/utils/time_utils.dart';
-
-const _cardPadding = EdgeInsets.symmetric(horizontal: 20, vertical: 10);
-const _cardCornerRadius = 20.0;
-const _cardShadowOpacity = 0.08;
-const _cardShadowBlur = 12.0;
-const _cardShadowOffset = Offset(0, 6);
-const _cardInnerPadding = EdgeInsets.fromLTRB(18, 16, 18, 18);
-const _avatarRadius = 22.0;
-const _avatarSpacing = 16.0;
-const _titleSpacing = 4.0;
-const _goalIconSize = 18.0;
-const _goalSpacing = 6.0;
-const _sectionSpacing = 16.0;
-const _chipSpacing = 12.0;
-const _chipPadding = EdgeInsets.symmetric(horizontal: 14, vertical: 10);
-const _chipCornerRadius = 14.0;
-const _chipIconSize = 18.0;
-const _chipIconSpacing = 8.0;
-const _chipBackgroundOpacity = 0.14;
-const _chipBorderOpacity = 0.35;
-const _chipLabelOpacity = 0.75;
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class SleepListItem extends StatefulWidget {
   const SleepListItem({
@@ -88,11 +68,12 @@ class _SleepListItemState extends State<SleepListItem> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: _cardPadding,
+      padding: UiConstants.sleepListItemPadding,
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
-          borderRadius: BorderRadius.circular(_cardCornerRadius),
+          borderRadius:
+              BorderRadius.circular(UiConstants.sleepListItemCornerRadius),
           onTap: () async {
             final result = await Navigator.of(context).push(
               CupertinoPageRoute(
@@ -106,18 +87,20 @@ class _SleepListItemState extends State<SleepListItem> {
           child: Ink(
             decoration: BoxDecoration(
               color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(_cardCornerRadius),
+              borderRadius:
+                  BorderRadius.circular(UiConstants.sleepListItemCornerRadius),
               border: Border.all(color: colorScheme.outlineVariant),
               boxShadow: [
                 BoxShadow(
-                  color: colorScheme.shadow.withOpacity(_cardShadowOpacity),
-                  blurRadius: _cardShadowBlur,
-                  offset: _cardShadowOffset,
+                  color: colorScheme.shadow.withOpacity(
+                      UiConstants.sleepListItemShadowOpacity),
+                  blurRadius: UiConstants.sleepListItemShadowBlur,
+                  offset: UiConstants.sleepListItemShadowOffset,
                 ),
               ],
             ),
             child: Padding(
-              padding: _cardInnerPadding,
+              padding: UiConstants.sleepListItemInnerPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -125,7 +108,7 @@ class _SleepListItemState extends State<SleepListItem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircleAvatar(
-                        radius: _avatarRadius,
+                        radius: UiConstants.sleepListItemAvatarRadius,
                         backgroundColor: isAchieved
                             ? colorScheme.primaryContainer
                             : colorScheme.secondaryContainer,
@@ -136,7 +119,8 @@ class _SleepListItemState extends State<SleepListItem> {
                               : colorScheme.onSecondaryContainer,
                         ),
                       ),
-                      const SizedBox(width: _avatarSpacing),
+                      const SizedBox(
+                          width: UiConstants.sleepListItemAvatarSpacing),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,15 +134,17 @@ class _SleepListItemState extends State<SleepListItem> {
                                     fontWeight: FontWeight.w800,
                                   ),
                             ),
-                            const SizedBox(height: _titleSpacing),
+                            const SizedBox(
+                                height: UiConstants.sleepListItemTitleSpacing),
                             Row(
                               children: [
                                 Icon(
                                   Icons.flag_rounded,
-                                  size: _goalIconSize,
+                                  size: UiConstants.sleepListItemGoalIconSize,
                                   color: colorScheme.primary,
                                 ),
-                                const SizedBox(width: _goalSpacing),
+                                const SizedBox(
+                                    width: UiConstants.sleepListItemGoalSpacing),
                                 Text(
                                   '目標差: $goalDifferenceText',
                                   style: Theme.of(context)
@@ -180,10 +166,11 @@ class _SleepListItemState extends State<SleepListItem> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: _sectionSpacing),
+                  const SizedBox(
+                      height: UiConstants.sleepListItemSectionSpacing),
                   Wrap(
-                    spacing: _chipSpacing,
-                    runSpacing: _chipSpacing,
+                    spacing: UiConstants.sleepListItemChipSpacing,
+                    runSpacing: UiConstants.sleepListItemChipSpacing,
                     children: [
                       _InfoChip(
                         icon: Icons.single_bed_rounded,
@@ -208,7 +195,8 @@ class _SleepListItemState extends State<SleepListItem> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: _sectionSpacing),
+                  const SizedBox(
+                      height: UiConstants.sleepListItemSectionSpacing),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -293,24 +281,27 @@ class _InfoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: _chipPadding,
+      padding: UiConstants.sleepListItemChipPadding,
       decoration: BoxDecoration(
-        color: color.withOpacity(_chipBackgroundOpacity),
-        borderRadius: BorderRadius.circular(_chipCornerRadius),
-        border: Border.all(color: color.withOpacity(_chipBorderOpacity)),
+        color: color.withOpacity(UiConstants.sleepListItemChipBackgroundOpacity),
+        borderRadius:
+            BorderRadius.circular(UiConstants.sleepListItemChipCornerRadius),
+        border: Border.all(
+            color: color.withOpacity(UiConstants.sleepListItemChipBorderOpacity)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: _chipIconSize, color: color),
-          const SizedBox(width: _chipIconSpacing),
+          Icon(icon, size: UiConstants.sleepListItemChipIconSize, color: color),
+          const SizedBox(width: UiConstants.sleepListItemChipIconSpacing),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: textColor.withOpacity(_chipLabelOpacity),
+                      color: textColor
+                          .withOpacity(UiConstants.sleepListItemChipLabelOpacity),
                       fontWeight: FontWeight.w600,
                     ),
               ),

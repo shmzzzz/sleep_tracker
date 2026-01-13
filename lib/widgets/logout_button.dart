@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-const _logoutIconSize = 18.0;
-const _logoutPadding = EdgeInsets.symmetric(horizontal: 16, vertical: 10);
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({
@@ -29,11 +27,11 @@ class LogoutButton extends StatelessWidget {
         // ログアウト処理
         FirebaseAuth.instance.signOut();
       },
-      icon: const Icon(Icons.exit_to_app, size: _logoutIconSize),
+      icon: const Icon(Icons.exit_to_app, size: UiConstants.logoutIconSize),
       label: const Text('ログアウト'),
       style: OutlinedButton.styleFrom(
         shape: const StadiumBorder(),
-        padding: _logoutPadding,
+        padding: UiConstants.logoutPadding,
         textStyle: const TextStyle(fontWeight: FontWeight.w600),
       ),
     );

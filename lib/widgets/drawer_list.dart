@@ -4,22 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sleep_tracker/screens/sleep_add.dart';
 import 'package:sleep_tracker/screens/sleep_list.dart';
 import 'package:sleep_tracker/widgets/logout_button.dart';
-
-const _drawerPadding = EdgeInsets.fromLTRB(20, 24, 20, 16);
-const _profilePadding = EdgeInsets.fromLTRB(18, 18, 18, 16);
-const _profileCornerRadius = 20.0;
-const _profileIconSize = 44.0;
-const _profileIconCornerRadius = 14.0;
-const _profileTitleSpacing = 12.0;
-const _profileEmailSpacing = 4.0;
-const _profileIconOpacity = 0.2;
-const _profileEmailOpacity = 0.85;
-const _sectionSpacing = 20.0;
-const _menuPadding = EdgeInsets.all(6);
-const _menuCornerRadius = 18.0;
-const _menuChevronSize = 16.0;
-const _logoutPadding = EdgeInsets.symmetric(horizontal: 12, vertical: 10);
-const _logoutCornerRadius = 18.0;
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class DrawerList extends StatelessWidget {
   const DrawerList({super.key});
@@ -32,10 +17,10 @@ class DrawerList extends StatelessWidget {
     return Drawer(
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
-        padding: _drawerPadding,
+        padding: UiConstants.drawerPadding,
         children: [
           Container(
-            padding: _profilePadding,
+            padding: UiConstants.drawerProfilePadding,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -45,24 +30,27 @@ class DrawerList extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.circular(_profileCornerRadius),
+              borderRadius:
+                  BorderRadius.circular(UiConstants.drawerProfileCornerRadius),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: _profileIconSize,
-                  height: _profileIconSize,
+                  width: UiConstants.drawerProfileIconSize,
+                  height: UiConstants.drawerProfileIconSize,
                   decoration: BoxDecoration(
-                    color: colorScheme.onPrimary.withOpacity(_profileIconOpacity),
-                    borderRadius: BorderRadius.circular(_profileIconCornerRadius),
+                    color: colorScheme.onPrimary.withOpacity(
+                        UiConstants.drawerProfileIconOpacity),
+                    borderRadius: BorderRadius.circular(
+                        UiConstants.drawerProfileIconCornerRadius),
                   ),
                   child: Icon(
                     Icons.nightlight_round,
                     color: colorScheme.onPrimary,
                   ),
                 ),
-                const SizedBox(height: _profileTitleSpacing),
+                const SizedBox(height: UiConstants.drawerProfileTitleSpacing),
                 Text(
                   'Sleep Tracker',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -70,23 +58,24 @@ class DrawerList extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                 ),
-                const SizedBox(height: _profileEmailSpacing),
+                const SizedBox(height: UiConstants.drawerProfileEmailSpacing),
                 Text(
                   user?.email ?? '',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color:
-                            colorScheme.onPrimary.withOpacity(_profileEmailOpacity),
+                        color: colorScheme.onPrimary
+                            .withOpacity(UiConstants.drawerProfileEmailOpacity),
                       ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: _sectionSpacing),
+          const SizedBox(height: UiConstants.drawerSectionSpacing),
           Container(
-            padding: _menuPadding,
+            padding: UiConstants.drawerMenuPadding,
             decoration: BoxDecoration(
               color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(_menuCornerRadius),
+              borderRadius:
+                  BorderRadius.circular(UiConstants.drawerMenuCornerRadius),
               border: Border.all(color: colorScheme.outlineVariant),
             ),
             child: Column(
@@ -105,10 +94,8 @@ class DrawerList extends StatelessWidget {
                       ),
                     );
                   },
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: _menuChevronSize,
-                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
+                      size: UiConstants.drawerMenuChevronSize),
                 ),
                 Divider(color: colorScheme.outlineVariant),
                 ListTile(
@@ -125,20 +112,19 @@ class DrawerList extends StatelessWidget {
                       ),
                     );
                   },
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: _menuChevronSize,
-                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
+                      size: UiConstants.drawerMenuChevronSize),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: _sectionSpacing),
+          const SizedBox(height: UiConstants.drawerSectionSpacing),
           Container(
-            padding: _logoutPadding,
+            padding: UiConstants.drawerLogoutPadding,
             decoration: BoxDecoration(
               color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(_logoutCornerRadius),
+              borderRadius:
+                  BorderRadius.circular(UiConstants.drawerLogoutCornerRadius),
               border: Border.all(color: colorScheme.outlineVariant),
             ),
             child: Align(

@@ -2,26 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:sleep_tracker/models/sleep_entry.dart';
 import 'package:sleep_tracker/utils/time_utils.dart';
-
-const _emptyStatePadding = EdgeInsets.symmetric(vertical: 16);
-const _minDataPoints = 2;
-const _chartAspectRatio = 1.5;
-const _chartPadding = EdgeInsets.only(top: 12, right: 12, left: 6, bottom: 8);
-const _yAxisPadding = 0.5;
-const _maxHoursPerDay = 24;
-const _leftTitleReservedSize = 44.0;
-const _bottomTitleReservedSize = 32.0;
-const _bottomTitleSpacing = 8.0;
-const _gridInterval = 1.0;
-const _gridStrokeWidth = 0.7;
-const _gridDashArray = [4, 4];
-const _gridLineOpacity = 0.6;
-const _axisLineOpacity = 0.4;
-const _lineBarWidth = 3.0;
-const _dotRadius = 3.2;
-const _dotStrokeWidth = 1.6;
-const _areaOpacityStart = 0.2;
-const _areaOpacityEnd = 0.02;
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class SleepTrendChart extends StatelessWidget {
   const SleepTrendChart({
@@ -38,9 +19,9 @@ class SleepTrendChart extends StatelessWidget {
         .toList(growable: false)
       ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
-    if (filtered.length < _minDataPoints) {
+    if (filtered.length < UiConstants.trendChartMinDataPoints) {
       return const Padding(
-        padding: _emptyStatePadding,
+        padding: UiConstants.trendChartEmptyStatePadding,
         child: Center(
           child: Text('グラフを表示するには睡眠データを2日以上登録してください。'),
         ),
@@ -58,21 +39,24 @@ class SleepTrendChart extends StatelessWidget {
     }
 
     final yValues = spots.map((spot) => spot.y);
-    final minY = ((yValues.reduce((a, b) => a < b ? a : b) - _yAxisPadding)
-            .clamp(0, _maxHoursPerDay))
+    final minY = ((yValues.reduce((a, b) => a < b ? a : b) -
+                UiConstants.trendChartYAxisPadding)
+            .clamp(0, UiConstants.trendChartMaxHoursPerDay))
         .toDouble();
-    final maxY = ((yValues.reduce((a, b) => a > b ? a : b) + _yAxisPadding)
-            .clamp(0, _maxHoursPerDay))
+    final maxY = ((yValues.reduce((a, b) => a > b ? a : b) +
+                UiConstants.trendChartYAxisPadding)
+            .clamp(0, UiConstants.trendChartMaxHoursPerDay))
         .toDouble();
 
     final colorScheme = Theme.of(context).colorScheme;
-    final gridLineColor = colorScheme.outlineVariant.withOpacity(_gridLineOpacity);
+    final gridLineColor = colorScheme.outlineVariant
+        .withOpacity(UiConstants.trendChartGridLineOpacity);
     final axisLineColor = colorScheme.outlineVariant;
 
     return AspectRatio(
-      aspectRatio: _chartAspectRatio,
+      aspectRatio: UiConstants.trendChartAspectRatio,
       child: Padding(
-        padding: _chartPadding,
+        padding: UiConstants.trendChartPadding,
         child: LineChart(
           LineChartData(
             minY: minY,
@@ -81,7 +65,7 @@ class SleepTrendChart extends StatelessWidget {
               leftTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
-                  reservedSize: _leftTitleReservedSize,
+                  reservedSize: UiConstants.trendChartLeftTitleReservedSize,
                   getTitlesWidget: (value, _) =>
                       Text('${value.toStringAsFixed(0)}h'),
                 ),
@@ -89,15 +73,16 @@ class SleepTrendChart extends StatelessWidget {
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
-                  interval: _gridInterval,
-                  reservedSize: _bottomTitleReservedSize,
+                  interval: UiConstants.trendChartGridInterval,
+                  reservedSize: UiConstants.trendChartBottomTitleReservedSize,
                   getTitlesWidget: (value, _) {
                     final label = labels[value.toInt()];
                     if (label == null) {
                       return const SizedBox.shrink();
                     }
                     return Padding(
-                      padding: const EdgeInsets.only(top: _bottomTitleSpacing),
+                      padding: const EdgeInsets.only(
+                          top: UiConstants.trendChartBottomTitleSpacing),
                       child: Text(label),
                     );
                   },
@@ -113,10 +98,10 @@ class SleepTrendChart extends StatelessWidget {
             gridData: FlGridData(
               show: true,
               drawVerticalLine: false,
-              horizontalInterval: _gridInterval,
+              horizontalInterval: UiConstants.trendChartGridInterval,
               getDrawingHorizontalLine: (value) => FlLine(
-                strokeWidth: _gridStrokeWidth,
-                dashArray: _gridDashArray,
+                strokeWidth: UiConstants.trendChartGridStrokeWidth,
+                dashArray: UiConstants.trendChartGridDashArray,
                 color: gridLineColor,
               ),
             ),
@@ -126,24 +111,26 @@ class SleepTrendChart extends StatelessWidget {
                 left: BorderSide(color: axisLineColor),
                 bottom: BorderSide(color: axisLineColor),
                 top: BorderSide(
-                    color: axisLineColor.withOpacity(_axisLineOpacity)),
+                    color: axisLineColor
+                        .withOpacity(UiConstants.trendChartAxisLineOpacity)),
                 right: BorderSide(
-                    color: axisLineColor.withOpacity(_axisLineOpacity)),
+                    color: axisLineColor
+                        .withOpacity(UiConstants.trendChartAxisLineOpacity)),
               ),
             ),
             lineBarsData: [
               LineChartBarData(
                 spots: spots,
                 isCurved: true,
-                barWidth: _lineBarWidth,
+                barWidth: UiConstants.trendChartLineBarWidth,
                 color: colorScheme.primary,
                 dotData: FlDotData(
                   show: true,
                   getDotPainter: (spot, percent, barData, index) {
                     return FlDotCirclePainter(
-                      radius: _dotRadius,
+                      radius: UiConstants.trendChartDotRadius,
                       color: colorScheme.primary,
-                      strokeWidth: _dotStrokeWidth,
+                      strokeWidth: UiConstants.trendChartDotStrokeWidth,
                       strokeColor: colorScheme.surface,
                     );
                   },
@@ -152,8 +139,10 @@ class SleepTrendChart extends StatelessWidget {
                   show: true,
                   gradient: LinearGradient(
                     colors: [
-                      colorScheme.primary.withOpacity(_areaOpacityStart),
-                      colorScheme.primary.withOpacity(_areaOpacityEnd),
+                      colorScheme.primary
+                          .withOpacity(UiConstants.trendChartAreaOpacityStart),
+                      colorScheme.primary
+                          .withOpacity(UiConstants.trendChartAreaOpacityEnd),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,

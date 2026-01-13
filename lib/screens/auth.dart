@@ -3,26 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sleep_tracker/utils/firebase_errors.dart';
 import 'package:sleep_tracker/utils/context_extensions.dart';
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 final _firebase = FirebaseAuth.instance;
-
-const _pagePadding = EdgeInsets.symmetric(horizontal: 24, vertical: 24);
-const _logoSize = 68.0;
-const _logoCornerRadius = 22.0;
-const _logoIconSize = 36.0;
-const _titleSpacing = 16.0;
-const _subtitleSpacing = 8.0;
-const _sectionSpacing = 24.0;
-const _cardPadding = EdgeInsets.symmetric(horizontal: 24, vertical: 28);
-const _cardCornerRadius = 22.0;
-const _cardShadowOpacity = 0.08;
-const _cardShadowBlur = 16.0;
-const _cardShadowOffset = Offset(0, 8);
-const _progressFadeDuration = Duration(milliseconds: 250);
-const _fieldSpacing = 16.0;
-const _buttonSpacing = 24.0;
-const _toggleSpacing = 12.0;
-const _minPasswordLength = 6;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -182,25 +165,26 @@ class _AuthScreenState extends State<AuthScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: _pagePadding,
+            padding: UiConstants.authPagePadding,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  width: _logoSize,
-                  height: _logoSize,
+                  width: UiConstants.authLogoSize,
+                  height: UiConstants.authLogoSize,
                   decoration: BoxDecoration(
                     color: colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(_logoCornerRadius),
+                    borderRadius:
+                        BorderRadius.circular(UiConstants.authLogoCornerRadius),
                   ),
                   child: Icon(
                     Icons.bedtime_rounded,
-                    size: _logoIconSize,
+                    size: UiConstants.authLogoIconSize,
                     color: colorScheme.onPrimaryContainer,
                   ),
                 ),
-                const SizedBox(height: _titleSpacing),
+                const SizedBox(height: UiConstants.authTitleSpacing),
                 Text(
                   'Sleep Tracker',
                   textAlign: TextAlign.center,
@@ -208,7 +192,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         fontWeight: FontWeight.w800,
                       ),
                 ),
-                const SizedBox(height: _subtitleSpacing),
+                const SizedBox(height: UiConstants.authSubtitleSpacing),
                 Text(
                   'ヘルスケアに特化した睡眠トラッカーで、日々のリズムを整えましょう。',
                   textAlign: TextAlign.center,
@@ -216,19 +200,21 @@ class _AuthScreenState extends State<AuthScreen> {
                         color: colorScheme.onSurfaceVariant,
                       ),
                 ),
-                const SizedBox(height: _sectionSpacing),
+                const SizedBox(height: UiConstants.authSectionSpacing),
                 Container(
-                  padding: _cardPadding,
+                  padding: UiConstants.authCardPadding,
                   decoration: BoxDecoration(
                     color: colorScheme.surface,
-                    borderRadius: BorderRadius.circular(_cardCornerRadius),
+                    borderRadius: BorderRadius.circular(
+                        UiConstants.authCardCornerRadius),
                     border: Border.all(color: colorScheme.outlineVariant),
                     boxShadow: [
                       BoxShadow(
                         color:
-                            colorScheme.shadow.withOpacity(_cardShadowOpacity),
-                        blurRadius: _cardShadowBlur,
-                        offset: _cardShadowOffset,
+                            colorScheme.shadow.withOpacity(
+                                UiConstants.authCardShadowOpacity),
+                        blurRadius: UiConstants.authCardShadowBlur,
+                        offset: UiConstants.authCardShadowOffset,
                       ),
                     ],
                   ),
@@ -239,13 +225,13 @@ class _AuthScreenState extends State<AuthScreen> {
                       children: [
                         AnimatedOpacity(
                           opacity: _isAuthenticating ? 1 : 0,
-                          duration: _progressFadeDuration,
+                          duration: UiConstants.authProgressFadeDuration,
                           child: _isAuthenticating
                               ? const LinearProgressIndicator()
                               : const SizedBox.shrink(),
                         ),
                         if (_isAuthenticating)
-                          const SizedBox(height: _fieldSpacing),
+                          const SizedBox(height: UiConstants.authFieldSpacing),
                         TextFormField(
                           decoration: const InputDecoration(
                             label: Text('メールアドレス'),
@@ -266,7 +252,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             _enteredEmail = newValue!;
                           },
                         ),
-                        const SizedBox(height: _fieldSpacing),
+                        const SizedBox(height: UiConstants.authFieldSpacing),
                         TextFormField(
                           decoration: InputDecoration(
                             label: const Text('パスワード'),
@@ -285,8 +271,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           obscureText: _obscurePassword,
                           validator: (value) {
                             if (value == null ||
-                                value.length < _minPasswordLength) {
-                              return 'パスワードを$_minPasswordLength文字以上で入力してください。';
+                                value.length <
+                                    UiConstants.authMinPasswordLength) {
+                              return 'パスワードを${UiConstants.authMinPasswordLength}文字以上で入力してください。';
                             }
                             return null;
                           },
@@ -299,7 +286,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             }
                           },
                         ),
-                        const SizedBox(height: _buttonSpacing),
+                        const SizedBox(height: UiConstants.authButtonSpacing),
                         FilledButton.icon(
                           onPressed: _isAuthenticating ? null : _submit,
                           icon: Icon(
@@ -307,7 +294,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                           label: Text(_isLogin ? 'ログイン' : 'アカウント作成'),
                         ),
-                        const SizedBox(height: _toggleSpacing),
+                        const SizedBox(height: UiConstants.authToggleSpacing),
                         TextButton(
                           onPressed: _isAuthenticating
                               ? null

@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sleep_tracker/widgets/logout_button.dart';
-
-const _appBarHeight = 72.0;
-const _titleSpacing = 20.0;
-const _logoSize = 34.0;
-const _logoCornerRadius = 12.0;
-const _logoIconSize = 18.0;
-const _logoTitleSpacing = 12.0;
-const _titleLetterSpacing = 0.4;
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class AppBarComponentWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -23,24 +16,25 @@ class AppBarComponentWidget extends StatelessWidget
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return AppBar(
-      toolbarHeight: _appBarHeight,
-      titleSpacing: _titleSpacing,
+      toolbarHeight: UiConstants.appBarHeight,
+      titleSpacing: UiConstants.appBarTitleSpacing,
       title: Row(
         children: [
           Container(
-            width: _logoSize,
-            height: _logoSize,
+            width: UiConstants.appBarLogoSize,
+            height: UiConstants.appBarLogoSize,
             decoration: BoxDecoration(
               color: colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(_logoCornerRadius),
+              borderRadius:
+                  BorderRadius.circular(UiConstants.appBarLogoCornerRadius),
             ),
             child: Icon(
               Icons.bedtime_rounded,
-              size: _logoIconSize,
+              size: UiConstants.appBarLogoIconSize,
               color: colorScheme.onPrimaryContainer,
             ),
           ),
-          const SizedBox(width: _logoTitleSpacing),
+          const SizedBox(width: UiConstants.appBarLogoTitleSpacing),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -49,7 +43,7 @@ class AppBarComponentWidget extends StatelessWidget
                 style: textTheme.labelSmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w600,
-                  letterSpacing: _titleLetterSpacing,
+                  letterSpacing: UiConstants.appBarTitleLetterSpacing,
                 ),
               ),
               Text(
@@ -70,6 +64,6 @@ class AppBarComponentWidget extends StatelessWidget
 
   @override
   Size get preferredSize {
-    return const Size.fromHeight(_appBarHeight);
+    return const Size.fromHeight(UiConstants.appBarHeight);
   }
 }

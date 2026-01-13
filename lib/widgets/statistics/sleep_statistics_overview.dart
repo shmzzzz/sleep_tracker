@@ -2,25 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sleep_tracker/models/sleep_entry.dart';
 import 'package:sleep_tracker/utils/sleep_statistics.dart';
 import 'package:sleep_tracker/widgets/statistics/sleep_trend_chart.dart';
-
-const _headerPadding = EdgeInsets.fromLTRB(20, 20, 20, 12);
-const _panelMargin = EdgeInsets.symmetric(horizontal: 20, vertical: 10);
-const _panelPadding = EdgeInsets.symmetric(horizontal: 20, vertical: 18);
-const _panelCornerRadius = 20.0;
-const _panelSpacing = 12.0;
-const _panelGradientOpacity = 0.65;
-const _metricChipSpacing = 12.0;
-const _chartPadding = EdgeInsets.symmetric(horizontal: 12, vertical: 12);
-const _chartCornerRadius = 20.0;
-const _chartTitlePadding = EdgeInsets.symmetric(horizontal: 8);
-const _chipPadding = EdgeInsets.symmetric(horizontal: 14, vertical: 12);
-const _chipCornerRadius = 16.0;
-const _chipDotSize = 8.0;
-const _chipDotSpacing = 6.0;
-const _chipValueSpacing = 4.0;
-const _chipLabelLetterSpacing = 0.1;
-const _chipBackgroundOpacity = 0.14;
-const _chipBorderOpacity = 0.35;
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class SleepStatisticsOverview extends StatelessWidget {
   const SleepStatisticsOverview({
@@ -38,7 +20,8 @@ class SleepStatisticsOverview extends StatelessWidget {
     final panelGradient = LinearGradient(
       colors: [
         colorScheme.surface,
-        colorScheme.surfaceVariant.withOpacity(_panelGradientOpacity),
+        colorScheme.surfaceVariant
+            .withOpacity(UiConstants.statisticsPanelGradientOpacity),
       ],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
@@ -47,7 +30,7 @@ class SleepStatisticsOverview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: _headerPadding,
+          padding: UiConstants.statisticsHeaderPadding,
           child: Text(
             '睡眠インサイト',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -56,11 +39,12 @@ class SleepStatisticsOverview extends StatelessWidget {
           ),
         ),
         Container(
-          margin: _panelMargin,
-          padding: _panelPadding,
+          margin: UiConstants.statisticsPanelMargin,
+          padding: UiConstants.statisticsPanelPadding,
           decoration: BoxDecoration(
             gradient: panelGradient,
-            borderRadius: BorderRadius.circular(_panelCornerRadius),
+            borderRadius:
+                BorderRadius.circular(UiConstants.statisticsPanelCornerRadius),
             border: Border.all(color: colorScheme.outlineVariant),
           ),
           child: Column(
@@ -72,10 +56,10 @@ class SleepStatisticsOverview extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
               ),
-              const SizedBox(height: _panelSpacing),
+              const SizedBox(height: UiConstants.statisticsPanelSpacing),
               Wrap(
-                spacing: _metricChipSpacing,
-                runSpacing: _metricChipSpacing,
+                spacing: UiConstants.statisticsMetricChipSpacing,
+                runSpacing: UiConstants.statisticsMetricChipSpacing,
                 children: [
                   _MetricChip(
                     label: '平均睡眠',
@@ -107,18 +91,19 @@ class SleepStatisticsOverview extends StatelessWidget {
           ),
         ),
         Container(
-          margin: _panelMargin,
-          padding: _chartPadding,
+          margin: UiConstants.statisticsPanelMargin,
+          padding: UiConstants.statisticsChartPadding,
           decoration: BoxDecoration(
             color: colorScheme.surface,
-            borderRadius: BorderRadius.circular(_chartCornerRadius),
+            borderRadius:
+                BorderRadius.circular(UiConstants.statisticsChartCornerRadius),
             border: Border.all(color: colorScheme.outlineVariant),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: _chartTitlePadding,
+                padding: UiConstants.statisticsChartTitlePadding,
                 child: Text(
                   '睡眠トレンド',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -152,11 +137,13 @@ class _MetricChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
-      padding: _chipPadding,
+      padding: UiConstants.statisticsChipPadding,
       decoration: BoxDecoration(
-        color: color.withOpacity(_chipBackgroundOpacity),
-        borderRadius: BorderRadius.circular(_chipCornerRadius),
-        border: Border.all(color: color.withOpacity(_chipBorderOpacity)),
+        color: color.withOpacity(UiConstants.statisticsChipBackgroundOpacity),
+        borderRadius:
+            BorderRadius.circular(UiConstants.statisticsChipCornerRadius),
+        border: Border.all(
+            color: color.withOpacity(UiConstants.statisticsChipBorderOpacity)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,25 +153,26 @@ class _MetricChip extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: _chipDotSize,
-                height: _chipDotSize,
+                width: UiConstants.statisticsChipDotSize,
+                height: UiConstants.statisticsChipDotSize,
                 decoration: BoxDecoration(
                   color: color,
                   shape: BoxShape.circle,
                 ),
               ),
-              const SizedBox(width: _chipDotSpacing),
+              const SizedBox(width: UiConstants.statisticsChipDotSpacing),
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w600,
-                      letterSpacing: _chipLabelLetterSpacing,
+                      letterSpacing:
+                          UiConstants.statisticsChipLabelLetterSpacing,
                     ),
               ),
             ],
           ),
-          const SizedBox(height: _chipValueSpacing),
+          const SizedBox(height: UiConstants.statisticsChipValueSpacing),
           Text(
             value,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
