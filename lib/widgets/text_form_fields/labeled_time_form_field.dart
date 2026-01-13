@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sleep_tracker/utils/time_utils.dart';
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 enum TimeFieldKind { hm, hmRange }
 
@@ -34,8 +35,7 @@ class LabeledTimeFormField extends StatelessWidget {
         hintText: hintText ?? formatHint,
         helperText: helperText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: UiConstants.timeFieldContentPadding,
       ),
       keyboardType: TextInputType.datetime,
       textInputAction: TextInputAction.next,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sleep_tracker/screens/sleep_add.dart';
 import 'package:sleep_tracker/screens/sleep_list.dart';
 import 'package:sleep_tracker/widgets/logout_button.dart';
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class DrawerList extends StatelessWidget {
   const DrawerList({super.key});
@@ -16,10 +17,10 @@ class DrawerList extends StatelessWidget {
     return Drawer(
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+        padding: UiConstants.drawerPadding,
         children: [
           Container(
-            padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
+            padding: UiConstants.drawerProfilePadding,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -29,24 +30,27 @@ class DrawerList extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius:
+                  BorderRadius.circular(UiConstants.drawerProfileCornerRadius),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 44,
-                  height: 44,
+                  width: UiConstants.drawerProfileIconSize,
+                  height: UiConstants.drawerProfileIconSize,
                   decoration: BoxDecoration(
-                    color: colorScheme.onPrimary.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(14),
+                    color: colorScheme.onPrimary.withOpacity(
+                        UiConstants.drawerProfileIconOpacity),
+                    borderRadius: BorderRadius.circular(
+                        UiConstants.drawerProfileIconCornerRadius),
                   ),
                   child: Icon(
                     Icons.nightlight_round,
                     color: colorScheme.onPrimary,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: UiConstants.drawerProfileTitleSpacing),
                 Text(
                   'Sleep Tracker',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -54,22 +58,24 @@ class DrawerList extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: UiConstants.drawerProfileEmailSpacing),
                 Text(
                   user?.email ?? '',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onPrimary.withOpacity(0.85),
+                        color: colorScheme.onPrimary
+                            .withOpacity(UiConstants.drawerProfileEmailOpacity),
                       ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: UiConstants.drawerSectionSpacing),
           Container(
-            padding: const EdgeInsets.all(6),
+            padding: UiConstants.drawerMenuPadding,
             decoration: BoxDecoration(
               color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(18),
+              borderRadius:
+                  BorderRadius.circular(UiConstants.drawerMenuCornerRadius),
               border: Border.all(color: colorScheme.outlineVariant),
             ),
             child: Column(
@@ -88,7 +94,8 @@ class DrawerList extends StatelessWidget {
                       ),
                     );
                   },
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
+                      size: UiConstants.drawerMenuChevronSize),
                 ),
                 Divider(color: colorScheme.outlineVariant),
                 ListTile(
@@ -105,17 +112,19 @@ class DrawerList extends StatelessWidget {
                       ),
                     );
                   },
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
+                      size: UiConstants.drawerMenuChevronSize),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: UiConstants.drawerSectionSpacing),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: UiConstants.drawerLogoutPadding,
             decoration: BoxDecoration(
               color: colorScheme.surface,
-              borderRadius: BorderRadius.circular(18),
+              borderRadius:
+                  BorderRadius.circular(UiConstants.drawerLogoutCornerRadius),
               border: Border.all(color: colorScheme.outlineVariant),
             ),
             child: Align(

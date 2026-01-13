@@ -9,6 +9,7 @@ import 'package:sleep_tracker/widgets/sleep_list_item.dart';
 import 'package:sleep_tracker/services/sleep_repository.dart';
 import 'package:sleep_tracker/utils/sleep_statistics.dart';
 import 'package:sleep_tracker/widgets/statistics/sleep_statistics_overview.dart';
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class SleepListScreen extends StatefulWidget {
   const SleepListScreen({super.key});
@@ -71,7 +72,7 @@ class _SleepListScreenState extends State<SleepListScreen> {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.only(bottom: 96),
+                padding: UiConstants.sleepListBottomPadding,
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -107,7 +108,7 @@ class _SleepListScreenState extends State<SleepListScreen> {
         label: const Text('記録する'),
         style: FilledButton.styleFrom(
           shape: const StadiumBorder(),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: UiConstants.sleepListFabPadding,
         ),
       ),
     );
@@ -124,17 +125,17 @@ class _EmptyState extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+        padding: UiConstants.sleepListEmptyStatePadding,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               Icons.nightlight_round,
-              size: 64,
+              size: UiConstants.sleepListEmptyStateIconSize,
               color: colorScheme.primary,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: UiConstants.sleepListEmptyStateTitleSpacing),
             Text(
               '最初の睡眠記録を追加しましょう',
               textAlign: TextAlign.center,
@@ -142,7 +143,7 @@ class _EmptyState extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: UiConstants.sleepListEmptyStateBodySpacing),
             Text(
               '目標に対する達成状況や睡眠トレンドを記録していくと、生活リズムの改善に役立ちます。',
               textAlign: TextAlign.center,
@@ -150,7 +151,7 @@ class _EmptyState extends StatelessWidget {
                     color: colorScheme.onSurfaceVariant,
                   ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: UiConstants.sleepListEmptyStateButtonSpacing),
             FilledButton.icon(
               onPressed: onAdd,
               icon: const Icon(Icons.add),
@@ -172,13 +173,14 @@ class _ErrorState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.error_outline, size: 48),
-          const SizedBox(height: 12),
+          const Icon(Icons.error_outline,
+              size: UiConstants.sleepListErrorIconSize),
+          const SizedBox(height: UiConstants.sleepListErrorTitleSpacing),
           Text(
             'データの読み込みに失敗しました。',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: UiConstants.sleepListErrorBodySpacing),
           Text(
             '通信環境を確認してからもう一度お試しください。',
             style: Theme.of(context).textTheme.bodyMedium,
