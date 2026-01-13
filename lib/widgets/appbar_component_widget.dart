@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sleep_tracker/widgets/logout_button.dart';
+import 'package:sleep_tracker/utils/ui_constants.dart';
 
 class AppBarComponentWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -15,24 +16,25 @@ class AppBarComponentWidget extends StatelessWidget
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return AppBar(
-      toolbarHeight: 72,
-      titleSpacing: 20,
+      toolbarHeight: UiConstants.appBarHeight,
+      titleSpacing: UiConstants.appBarTitleSpacing,
       title: Row(
         children: [
           Container(
-            width: 34,
-            height: 34,
+            width: UiConstants.appBarLogoSize,
+            height: UiConstants.appBarLogoSize,
             decoration: BoxDecoration(
               color: colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius:
+                  BorderRadius.circular(UiConstants.appBarLogoCornerRadius),
             ),
             child: Icon(
               Icons.bedtime_rounded,
-              size: 18,
+              size: UiConstants.appBarLogoIconSize,
               color: colorScheme.onPrimaryContainer,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: UiConstants.appBarLogoTitleSpacing),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,7 +43,7 @@ class AppBarComponentWidget extends StatelessWidget
                 style: textTheme.labelSmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w600,
-                  letterSpacing: 0.4,
+                  letterSpacing: UiConstants.appBarTitleLetterSpacing,
                 ),
               ),
               Text(
@@ -62,6 +64,6 @@ class AppBarComponentWidget extends StatelessWidget
 
   @override
   Size get preferredSize {
-    return const Size.fromHeight(72);
+    return const Size.fromHeight(UiConstants.appBarHeight);
   }
 }
