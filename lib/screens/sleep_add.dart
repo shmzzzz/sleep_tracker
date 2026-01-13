@@ -54,33 +54,34 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
     if (_formKey.currentState!.validate()) {
       try {
         final userUid = FirebaseAuth.instance.currentUser!.uid;
-        final normalizedTotal =
-            normalizeFlexibleHm(_totalSleepHourController.text)!;
-        final normalizedSleep =
-            normalizeFlexibleHmRange(_sleepHourController.text)!;
-        final normalizedCore =
-            normalizeFlexibleHm(_coreSleepHourController.text)!;
-        final normalizedGoal =
-            normalizeFlexibleHm(_goalSleepHourController.text)!;
+        final normalized = normalizeSleepEntryInputs(
+          total: _totalSleepHourController.text,
+          sleep: _sleepHourController.text,
+          core: _coreSleepHourController.text,
+          goal: _goalSleepHourController.text,
+        );
+        if (normalized == null) {
+          throw const FormatException('入力値を正規化できません。');
+        }
 
-        _totalSleepHourController.text = normalizedTotal;
-        _sleepHourController.text = normalizedSleep;
-        _coreSleepHourController.text = normalizedCore;
-        _goalSleepHourController.text = normalizedGoal;
-        inputTotal = normalizedTotal;
-        inputSleep = normalizedSleep;
-        inputCore = normalizedCore;
-        inputGoal = normalizedGoal;
+        _totalSleepHourController.text = normalized.total;
+        _sleepHourController.text = normalized.sleep;
+        _coreSleepHourController.text = normalized.core;
+        _goalSleepHourController.text = normalized.goal;
+        inputTotal = normalized.total;
+        inputSleep = normalized.sleep;
+        inputCore = normalized.core;
+        inputGoal = normalized.goal;
 
         // 目標との比較
-        isAchieved = isAchievedByHm(normalizedTotal, normalizedGoal);
+        isAchieved = isAchievedByHm(normalized.total, normalized.goal);
         // FireStoreにデータを保存する
         const repo = SleepRepository();
         await repo.add(userUid, {
-          'total': normalizedTotal,
-          'sleep': normalizedSleep,
-          'core': normalizedCore,
-          'goal': normalizedGoal,
+          'total': normalized.total,
+          'sleep': normalized.sleep,
+          'core': normalized.core,
+          'goal': normalized.goal,
           'isAchieved': isAchieved,
           'createdAt': Timestamp.fromDate(selectedDate),
         });
