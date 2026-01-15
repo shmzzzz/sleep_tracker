@@ -62,23 +62,28 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
     if (_formKey.currentState!.validate()) {
       try {
         final userUid = FirebaseAuth.instance.currentUser!.uid;
-        final normalizedTotal = normalizeFlexibleHm(totalController.text)!;
-        final normalizedSleep = normalizeFlexibleHmRange(sleepController.text)!;
-        final normalizedCore = normalizeFlexibleHm(coreController.text)!;
-        final normalizedGoal = normalizeFlexibleHm(goalController.text)!;
+        final normalized = normalizeSleepEntryInputs(
+          total: totalController.text,
+          sleep: sleepController.text,
+          core: coreController.text,
+          goal: goalController.text,
+        );
+        if (normalized == null) {
+          throw const FormatException('入力値を正規化できません。');
+        }
 
-        totalController.text = normalizedTotal;
-        sleepController.text = normalizedSleep;
-        coreController.text = normalizedCore;
-        goalController.text = normalizedGoal;
+        totalController.text = normalized.total;
+        sleepController.text = normalized.sleep;
+        coreController.text = normalized.core;
+        goalController.text = normalized.goal;
 
-        final achieved = isAchievedByHm(normalizedTotal, normalizedGoal);
+        final achieved = isAchievedByHm(normalized.total, normalized.goal);
         const repo = SleepRepository();
         await repo.update(userUid, widget.entry.id, {
-          'total': normalizedTotal,
-          'sleep': normalizedSleep,
-          'core': normalizedCore,
-          'goal': normalizedGoal,
+          'total': normalized.total,
+          'sleep': normalized.sleep,
+          'core': normalized.core,
+          'goal': normalized.goal,
           'isAchieved': achieved,
           'createdAt': Timestamp.fromDate(selectedDate),
         });
