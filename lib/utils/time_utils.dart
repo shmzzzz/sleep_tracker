@@ -115,6 +115,44 @@ DateTime parseHm(String value) {
 
 bool isValidHm(String value) => normalizeFlexibleHm(value) != null;
 
+class NormalizedSleepInputs {
+  const NormalizedSleepInputs({
+    required this.total,
+    required this.sleep,
+    required this.core,
+    required this.goal,
+  });
+
+  final String total;
+  final String sleep;
+  final String core;
+  final String goal;
+}
+
+NormalizedSleepInputs? normalizeSleepEntryInputs({
+  required String total,
+  required String sleep,
+  required String core,
+  required String goal,
+}) {
+  final normalizedTotal = normalizeFlexibleHm(total);
+  final normalizedSleep = normalizeFlexibleHmRange(sleep);
+  final normalizedCore = normalizeFlexibleHm(core);
+  final normalizedGoal = normalizeFlexibleHm(goal);
+  if (normalizedTotal == null ||
+      normalizedSleep == null ||
+      normalizedCore == null ||
+      normalizedGoal == null) {
+    return null;
+  }
+  return NormalizedSleepInputs(
+    total: normalizedTotal,
+    sleep: normalizedSleep,
+    core: normalizedCore,
+    goal: normalizedGoal,
+  );
+}
+
 Duration? hmToDuration(String value) {
   final normalized = normalizeFlexibleHm(value);
   if (normalized == null) {
