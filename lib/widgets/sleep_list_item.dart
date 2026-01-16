@@ -74,16 +74,7 @@ class _SleepListItemState extends State<SleepListItem> {
         child: InkWell(
           borderRadius:
               BorderRadius.circular(UiConstants.sleepListItemCornerRadius),
-          onTap: () async {
-            final result = await Navigator.of(context).push(
-              CupertinoPageRoute(
-                builder: (context) {
-                  return SleepEditScreen(entry: entry);
-                },
-              ),
-            );
-            if (result is bool) updateAchievement(result);
-          },
+          onTap: () => _openEditScreen(entry),
           child: Ink(
             decoration: BoxDecoration(
               color: colorScheme.surface,
@@ -207,15 +198,7 @@ class _SleepListItemState extends State<SleepListItem> {
                             ),
                       ),
                       TextButton(
-                        onPressed: () async {
-                          final result = await Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (context) =>
-                                  SleepEditScreen(entry: entry),
-                            ),
-                          );
-                          if (result is bool) updateAchievement(result);
-                        },
+                        onPressed: () => _openEditScreen(entry),
                         child: const Text('編集'),
                       ),
                     ],
@@ -227,6 +210,15 @@ class _SleepListItemState extends State<SleepListItem> {
         ),
       ),
     );
+  }
+
+  Future<void> _openEditScreen(SleepEntry entry) async {
+    final result = await Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => SleepEditScreen(entry: entry),
+      ),
+    );
+    if (result is bool) updateAchievement(result);
   }
 
   String _goalDifferenceText() {
