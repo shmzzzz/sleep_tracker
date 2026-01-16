@@ -134,18 +134,7 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
           formKey: _formKey,
           title: '睡眠データを編集',
           description: '記録内容を更新すると統計情報とグラフにも即時反映されます。',
-          previewCard: SleepEntryPreviewCard(
-            total: totalController.text,
-            goal: goalController.text,
-            achievedIcon: Icons.flag_rounded,
-            unachievedIcon: Icons.alarm_rounded,
-            achievedColor: Theme.of(context).colorScheme.primary,
-            unachievedColor: Theme.of(context).colorScheme.tertiary,
-            emptyStateText: '目標との差分を確認してから更新しましょう。',
-            achievedText: '目標を達成しています。継続を応援します！',
-            unachievedText: '目標未達です。睡眠リズムを見直してみましょう。',
-            createdAtLabel: _buildCreatedAtLabel(),
-          ),
+          previewCard: _buildPreviewCard(),
           datePickerTile: SleepEntryDatePickerTile(
             selectedDate: selectedDate,
             onTap: _pickDate,
@@ -154,19 +143,15 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
           fields: [
             TotalSleepFormTextField(
               controller: totalController,
-              onChanged: (_) => setState(() {}),
             ),
             SleepHoursFormTextField(
               controller: sleepController,
-              onChanged: (_) => setState(() {}),
             ),
             CoreSleepFormTextField(
               controller: coreController,
-              onChanged: (_) => setState(() {}),
             ),
             GoalSleepFormTextField(
               controller: goalController,
-              onChanged: (_) => setState(() {}),
             ),
           ],
           primaryAction: FilledButton.icon(
@@ -191,6 +176,26 @@ class _SleepEditScreenState extends State<SleepEditScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildPreviewCard() {
+    return AnimatedBuilder(
+      animation: Listenable.merge([totalController, goalController]),
+      builder: (context, _) {
+        return SleepEntryPreviewCard(
+          total: totalController.text,
+          goal: goalController.text,
+          achievedIcon: Icons.flag_rounded,
+          unachievedIcon: Icons.alarm_rounded,
+          achievedColor: Theme.of(context).colorScheme.primary,
+          unachievedColor: Theme.of(context).colorScheme.tertiary,
+          emptyStateText: '目標との差分を確認してから更新しましょう。',
+          achievedText: '目標を達成しています。継続を応援します！',
+          unachievedText: '目標未達です。睡眠リズムを見直してみましょう。',
+          createdAtLabel: _buildCreatedAtLabel(),
+        );
+      },
     );
   }
 }
