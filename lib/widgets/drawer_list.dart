@@ -13,6 +13,7 @@ class DrawerList extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final user = FirebaseAuth.instance.currentUser;
+    final menuItems = _buildMenuItems(context);
 
     return Drawer(
       child: ListView(
@@ -79,43 +80,10 @@ class DrawerList extends StatelessWidget {
               border: Border.all(color: colorScheme.outlineVariant),
             ),
             child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.analytics_outlined),
-                  title: const Text('睡眠データ一覧'),
-                  subtitle: const Text('トレンドと達成状況を確認'),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pushReplacement(
-                      CupertinoPageRoute(
-                        builder: (context) {
-                          return const SleepListScreen();
-                        },
-                      ),
-                    );
-                  },
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                      size: UiConstants.drawerMenuChevronSize),
-                ),
-                Divider(color: colorScheme.outlineVariant),
-                ListTile(
-                  leading: const Icon(Icons.add_alarm_outlined),
-                  title: const Text('睡眠データ追加'),
-                  subtitle: const Text('新しい記録を登録'),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(
-                      CupertinoPageRoute(
-                        builder: (context) {
-                          return const SleepAddScreen();
-                        },
-                      ),
-                    );
-                  },
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                      size: UiConstants.drawerMenuChevronSize),
-                ),
-              ],
+              children: _buildMenuTiles(
+                menuItems,
+                divider: Divider(color: colorScheme.outlineVariant),
+              ),
             ),
           ),
           const SizedBox(height: UiConstants.drawerSectionSpacing),
@@ -138,4 +106,79 @@ class DrawerList extends StatelessWidget {
       ),
     );
   }
+
+  List<_DrawerMenuItem> _buildMenuItems(BuildContext context) {
+    return [
+      _DrawerMenuItem(
+        icon: Icons.analytics_outlined,
+        title: '睡眠データ一覧',
+        subtitle: 'トレンドと達成状況を確認',
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).pushReplacement(
+            CupertinoPageRoute(
+              builder: (context) {
+                return const SleepListScreen();
+              },
+            ),
+          );
+        },
+      ),
+      _DrawerMenuItem(
+        icon: Icons.add_alarm_outlined,
+        title: '睡眠データ追加',
+        subtitle: '新しい記録を登録',
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) {
+                return const SleepAddScreen();
+              },
+            ),
+          );
+        },
+      ),
+    ];
+  }
+
+  List<Widget> _buildMenuTiles(
+    List<_DrawerMenuItem> items, {
+    required Widget divider,
+  }) {
+    final tiles = <Widget>[];
+    for (var index = 0; index < items.length; index++) {
+      final item = items[index];
+      tiles.add(
+        ListTile(
+          leading: Icon(item.icon),
+          title: Text(item.title),
+          subtitle: Text(item.subtitle),
+          onTap: item.onTap,
+          trailing: const Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: UiConstants.drawerMenuChevronSize,
+          ),
+        ),
+      );
+      if (index < items.length - 1) {
+        tiles.add(divider);
+      }
+    }
+    return tiles;
+  }
+}
+
+class _DrawerMenuItem {
+  const _DrawerMenuItem({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
 }
