@@ -29,10 +29,6 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
   final _coreSleepHourController = TextEditingController();
   final _goalSleepHourController = TextEditingController();
 
-  String inputTotal = '';
-  String inputSleep = '';
-  String inputCore = '';
-  String inputGoal = '';
   DateTime selectedDate = DateTime.now();
   late bool isAchieved;
 
@@ -70,11 +66,6 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
         _sleepHourController.text = normalized.sleep;
         _coreSleepHourController.text = normalized.core;
         _goalSleepHourController.text = normalized.goal;
-        inputTotal = normalized.total;
-        inputSleep = normalized.sleep;
-        inputCore = normalized.core;
-        inputGoal = normalized.goal;
-
         // 目標との比較
         isAchieved = isAchievedByHm(normalized.total, normalized.goal);
         // FireStoreにデータを保存する
@@ -107,10 +98,6 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
       _sleepHourController.text = '';
       _coreSleepHourController.text = '';
       _goalSleepHourController.text = '';
-      inputTotal = '';
-      inputSleep = '';
-      inputCore = '';
-      inputGoal = '';
     });
   }
 
@@ -134,17 +121,7 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
           formKey: _formKey,
           title: '新しい睡眠データを記録',
           description: '目標睡眠時間との差を確認しながら、合計/睡眠/コア時間を入力しましょう。',
-          previewCard: SleepEntryPreviewCard(
-            total: inputTotal,
-            goal: inputGoal,
-            achievedIcon: Icons.emoji_events,
-            unachievedIcon: Icons.self_improvement,
-            achievedColor: Theme.of(context).colorScheme.primary,
-            unachievedColor: Theme.of(context).colorScheme.secondary,
-            emptyStateText: '目標時間を入力すると達成状況が確認できます。',
-            achievedText: '目標達成おめでとうございます！',
-            unachievedText: '目標まであと少し、次回も頑張りましょう。',
-          ),
+          previewCard: _buildPreviewCard(),
           datePickerTile: SleepEntryDatePickerTile(
             selectedDate: selectedDate,
             onTap: _pickDate,
@@ -153,35 +130,15 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
           fields: [
             TotalSleepFormTextField(
               controller: _totalSleepHourController,
-              onChanged: (value) {
-                setState(() {
-                  inputTotal = value;
-                });
-              },
             ),
             SleepHoursFormTextField(
               controller: _sleepHourController,
-              onChanged: (value) {
-                setState(() {
-                  inputSleep = value;
-                });
-              },
             ),
             CoreSleepFormTextField(
               controller: _coreSleepHourController,
-              onChanged: (value) {
-                setState(() {
-                  inputCore = value;
-                });
-              },
             ),
             GoalSleepFormTextField(
               controller: _goalSleepHourController,
-              onChanged: (value) {
-                setState(() {
-                  inputGoal = value;
-                });
-              },
             ),
           ],
           primaryAction: FilledButton.icon(
@@ -204,6 +161,28 @@ class _SleepAddScreenState extends State<SleepAddScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildPreviewCard() {
+    return AnimatedBuilder(
+      animation: Listenable.merge([
+        _totalSleepHourController,
+        _goalSleepHourController,
+      ]),
+      builder: (context, _) {
+        return SleepEntryPreviewCard(
+          total: _totalSleepHourController.text,
+          goal: _goalSleepHourController.text,
+          achievedIcon: Icons.emoji_events,
+          unachievedIcon: Icons.self_improvement,
+          achievedColor: Theme.of(context).colorScheme.primary,
+          unachievedColor: Theme.of(context).colorScheme.secondary,
+          emptyStateText: '目標時間を入力すると達成状況が確認できます。',
+          achievedText: '目標達成おめでとうございます！',
+          unachievedText: '目標まであと少し、次回も頑張りましょう。',
+        );
+      },
     );
   }
 }
